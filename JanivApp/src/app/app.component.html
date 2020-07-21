@@ -1,0 +1,58 @@
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<mat-toolbar  color="primary">
+  <mat-toolbar-row>    
+
+    <span><img src="assets/icons/icon-128x128.png" ></span>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-fill-remaining-space"></span>
+
+    <span>
+      <!-- Add font awesome icons -->
+      <a href="https://www.facebook.com/janivfoundationpune/" class="fa fa-facebook"></a>
+      <a href="https://www.instagram.com/janiv_foundation/" class="fa fa-instagram"></a>
+      <a href="https://www.youtube.com/channel/UCIV30vnOJNns_IXH5TUQFmw/" class="fa fa-youtube"></a>
+    </span>
+  
+  </mat-toolbar-row>  
+ 
+  <!-- nav -->
+  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+
+  </nav>
+</mat-toolbar>
+
+    <!-- main app container -->
+    <div class="app-container" [ngClass]="{ 'bg-light': user }">
+      <alert></alert>
+      <router-outlet></router-outlet>
+    </div>
+    
+  
+ 
+  <!--
+
+  <main>
+  <mat-card *ngFor="let item of items">
+  <mat-card-header>
+  <mat-card-title>{{item.title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+  {{item.body}}
+  </mat-card-content>
+  <mat-card-actions>
+  <a  mat-raised-button  href="{{item.title}}"  color="primary">More</a>
+  </mat-card-actions>
+  </mat-card>
+  </main>
+
+-->
+  

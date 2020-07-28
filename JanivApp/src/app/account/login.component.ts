@@ -45,6 +45,26 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
+        
+
+        var someValue = this.accountService.login(this.f.mobilenumber.value, this.f.password.value);
+        
+        console.log('We are here Sandeep');
+        console.log(someValue) ;
+        /*
+        .pipe(first())
+        .subscribe(
+            data => {
+                this.router.navigate([this.returnUrl]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+
+            */
+
+        /*
         this.accountService.login(this.f.mobilenumber.value, this.f.password.value)
             .pipe(first())
             .subscribe(
@@ -55,5 +75,7 @@ export class LoginComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
+
+                */
     }
 }

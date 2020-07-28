@@ -48,6 +48,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
@@ -70,11 +76,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.cors().and().csrf().disable().authorizeRequests()
 		.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+		.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
 		//.antMatchers("/api/glee/**").hasAnyAuthority("ADMIN", "USER")
 		.antMatchers("/api/users/**").hasAuthority("ADMIN")
 		.anyRequest().authenticated()
 		.and()
-		.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+		//.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 		.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 		// this disables session creation on Spring Security
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)		

@@ -8,6 +8,7 @@ public class Constants {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String SIGN_UP_URL = "/users/register";
+    public static final String LOGIN_URL = "/api/users/authenticate";
     
     //public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; //5 Hours
 }

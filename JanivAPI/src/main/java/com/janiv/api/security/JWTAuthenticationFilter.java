@@ -2,11 +2,13 @@ package com.janiv.api.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.janiv.api.model.JwtResponse;
 import com.janiv.api.model.MyUserDetails;
 import com.janiv.api.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -79,7 +81,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String token = jwtTokenUtil().generateToken(userDetails);
 
 		res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-
+			
+						
+		
+		res.getWriter().write( ResponseEntity.ok(new JwtResponse(token)).toString() );
+		res.getWriter().flush();
+		res.getWriter().close();
+		
 		//return ResponseEntity.ok(new JwtResponse(token));
 	}
 }

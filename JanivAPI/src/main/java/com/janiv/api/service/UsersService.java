@@ -7,12 +7,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.janiv.api.model.JwtResponse;
 import com.janiv.api.model.User;
 import com.janiv.api.repository.UsersRepository;
+import com.janiv.api.security.JwtTokenUtil;
 
 @Service
 public class UsersService {
@@ -20,8 +27,25 @@ public class UsersService {
 	@Autowired  
 	UsersRepository usersRepository;  
 
+	@Autowired	
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired	
+	private UserDetailsServiceImpl userDetailsService()
+	{
+		return new UserDetailsServiceImpl(usersRepository);
+	}
+
 	//encode password for encrypting password
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+	public UsersService(AuthenticationManager authenticationManager) {
+		this.authenticationManager = authenticationManager;	
+		
+	}
 
 	public List<User> getAllUsers() {		
 		List<User> users = new ArrayList<User>();  
@@ -54,16 +78,29 @@ public class UsersService {
 
 	}
 
-	public User authenticate(Long mobilenumber, String password) {
+	public String authenticate(String mobilenumber, String password) throws Exception {
 
-		//TODO: Actual authentication implementation required
-		User user = new User();
-		user.setMobilenumber(mobilenumber);
-		user.setFirstname("Sandeep");
-		user.setLastname("l");
+		try
+		{
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobilenumber, password));
 
-		return user;
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+	
+		
+		final UserDetails userDetails = userDetailsService().loadUserByUsername(mobilenumber);
+
+		final String token = jwtTokenUtil.generateToken(userDetails);
+
+
+		return token;
 	}
+
+
+
 
 
 

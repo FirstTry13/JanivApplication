@@ -15,9 +15,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UsersRepository userRepository;
 
+	public UserDetailsServiceImpl()
+	{		
+	}
+	
+	public UserDetailsServiceImpl(UsersRepository usersRepository) {
+		this.userRepository = usersRepository;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.getUserByUsername(Long.parseLong(username));
+	
+			User user = userRepository.getUserByUsername(Long.parseLong(username));
 		
 		if (user == null) {
 			throw new UsernameNotFoundException("Could not find user" + username);

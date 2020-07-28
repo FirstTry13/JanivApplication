@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {tap} from 'rxjs/operators';
 import {shareReplay} from 'rxjs/operators';
+import { first } from 'rxjs/operators';
+
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
@@ -43,9 +45,32 @@ export class AccountService {
 
             */
 
+           return this.http.post<any>(`${environment.loginUrl}`, { mobilenumber, password })
+           .pipe(
+            map(userData => {
+              sessionStorage.setItem("username", mobilenumber);
+              let tokenStr = "Bearer " + userData.token;
+              sessionStorage.setItem("token", tokenStr);
+              return userData;
+            })
+          );
+          
+
+          /*
            return this.http.post<User>(`${environment.loginUrl}`, { mobilenumber, password })
-           .pipe(tap(res => this.setSession)) 
-            //.shareReplay();
+           .pipe(map(
+            userData => {
+             sessionStorage.setItem('username',mobilenumber);
+             console.log('Sandeep is Testing'); 
+             console.log(userData); 
+             let tokenStr= 'Bearer '+ userData.token;
+             sessionStorage.setItem('token', tokenStr);
+             return userData;
+            }
+          )
+         );
+
+         */
             
     }
 
@@ -69,22 +94,15 @@ export class AccountService {
         this.router.navigate(['/account/login']);
     }
     
-    public isLoggedIn() {
-        return moment().isBefore(this.getExpiration());
-    }
-
-    isLoggedOut() {
-        return !this.isLoggedIn();
-    }
-
-    getExpiration() {
-        
-        //TODO: To implement expiration
-        const expiration = localStorage.getItem("expires_at");
-        const expiresAt = JSON.parse(expiration);
-        
-        return moment(expiresAt);
-    }
+    isUserLoggedIn() {
+        let user = sessionStorage.getItem('username')
+        //console.log(!(user === null))
+        return !(user === null)
+      }
+      
+      logOut() {
+        sessionStorage.removeItem('username')
+      }
 
     register(user: User) {
         return this.http.post(`${environment.apiUrl}/users/register`, user);

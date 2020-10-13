@@ -49,12 +49,13 @@ public class UsersService {
 
 	public List<User> getAllUsers() {		
 		List<User> users = new ArrayList<User>();  
-		usersRepository.findAll().forEach(user1 -> users.add(user1));  
+		//usersRepository.findAll().forEach(user1 -> users.add(user1));  
 		return users;  
 	}
 
-	public Optional<User> getUserByMobileNo(Long mobilenumber) {
-		return usersRepository.findById(mobilenumber);
+	public User getUserByMobileNo(Long mobilenumber) {
+		User user=usersRepository.getUserByUsername(mobilenumber);
+		return user;
 	}
 
 	public void saveOrUpdate(User user) {
@@ -69,12 +70,12 @@ public class UsersService {
 			user.setPassword(this.passwordEncoder.encode(password));
 		}
 
-		usersRepository.save(user); 
+		//usersRepository.save(user); 
 
 	}
 
 	public void delete(Long mobilenumber) {
-		usersRepository.deleteById(mobilenumber);
+		//usersRepository.deleteById(mobilenumber);
 
 	}
 
@@ -82,6 +83,7 @@ public class UsersService {
 
 		try
 		{
+			System.out.print(this.passwordEncoder.encode(password));
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobilenumber, password));
 
 		} catch (DisabledException e) {

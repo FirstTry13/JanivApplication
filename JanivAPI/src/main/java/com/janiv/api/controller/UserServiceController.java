@@ -54,7 +54,8 @@ public class UserServiceController {
 	@RequestMapping(value = "/users/{mobilenumber}")
 	public Optional<User> getUser(@PathVariable("mobilenumber") Long mobilenumber) 
 	{
-		return usersService.getUserByMobileNo(mobilenumber);
+		//return usersService.getUserByMobileNo(mobilenumber);
+		return null;
 
 	}
 

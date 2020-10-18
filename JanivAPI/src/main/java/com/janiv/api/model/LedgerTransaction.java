@@ -116,12 +116,12 @@ public class LedgerTransaction {
 	}
 
 
-	public LedgerType getLedgeryypeid() {
+	public LedgerType getLedgertypeid() {
 		return ledgertypeid;
 	}
 
 
-	public void setLedgeryypeid(LedgerType ledgeryypeid) {
+	public void setLedgertypeid(LedgerType ledgeryypeid) {
 		this.ledgertypeid = ledgeryypeid;
 	}
 

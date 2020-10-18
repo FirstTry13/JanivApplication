@@ -18,7 +18,7 @@ public class Location {
 	private int locationid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="districtid")
 	private District district;
 	
 	@Column
@@ -56,6 +56,9 @@ public class Location {
 	}
 	
 			
-	
+	public Location()
+	{
+		
+	}
 	
 }

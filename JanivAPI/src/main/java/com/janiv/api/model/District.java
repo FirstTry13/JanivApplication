@@ -21,7 +21,7 @@ public class District {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="stateid")
 	private State stateid;
 
 	public int getDistrictid() {
@@ -55,6 +55,10 @@ public class District {
 		this.stateid = stateid;
 	}
 
+	public District()
+	{
+		
+	}
 		
 	
 	

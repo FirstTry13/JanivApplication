@@ -48,38 +48,38 @@ public class User {
 	private String address;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="locationid")
 	private Location locationid;	
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="districtid")
 	private District districtid;	
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="stateid")
 	private State stateid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="countryid")
 	private Country countryid;	
 	
 	@Column
 	private String alternateaddress;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="alternatelocationid")
 	private Location alternatelocationid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="alternatedistrictid")
 	private District alternatedistrictid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="alternatestateid")
 	private State alternatestateid;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="alternatecountryid")
 	private Country alternatecountryid;	
 	
 	@Column

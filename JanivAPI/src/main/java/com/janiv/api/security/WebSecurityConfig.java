@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
 		.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
 		//.antMatchers("/api/glee/**").hasAnyAuthority("ADMIN", "USER")
-		.antMatchers("/api/users/**").hasAuthority("ADMIN")
+		.antMatchers("/api/**").hasAuthority("ADMIN")
 		.anyRequest().authenticated()
 		.and()
 		//.addFilter(new JWTAuthenticationFilter(authenticationManager()))

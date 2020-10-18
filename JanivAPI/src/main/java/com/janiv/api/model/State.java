@@ -21,7 +21,7 @@ public class State {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="countryid")
 	private Country countryid;
 
 	public int getStateid() {
@@ -56,7 +56,10 @@ public class State {
 	}
 
 	
-	
+	public State()
+	{
+		
+	}
 	
 	
 }

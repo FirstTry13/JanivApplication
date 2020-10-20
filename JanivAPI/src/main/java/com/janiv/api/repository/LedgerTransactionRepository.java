@@ -10,6 +10,7 @@ import com.janiv.api.model.User;
 
 public interface LedgerTransactionRepository extends CrudRepository<LedgerTransaction, Integer>{
 	
+	//rrr
 	List<LedgerTransaction> findByLedgertypeid(int ledgerType);
 
 

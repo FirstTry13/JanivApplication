@@ -35,7 +35,7 @@ public class LedgerTransaction {
 		}	
 	}
 			
-	// Defining mobilenumber as primary key
+	// Defining mobilenumber as primary key                yy
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO )
 	private int transactionid;

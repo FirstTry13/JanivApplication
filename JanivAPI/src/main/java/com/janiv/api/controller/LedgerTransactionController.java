@@ -21,7 +21,7 @@ public class LedgerTransactionController {
 	@GetMapping
 	public List<LedgerTransaction> getLedgerTransactionByLedgerType( ) {
 		
-		//@RequestParam(name = "ledgertypeid") int ledgertype
+		//@RequestParam(name = "ledgertypeid") int ledgertype   ggg
 		return transService.getTransactionByLedgerType(1);
 				
 	}

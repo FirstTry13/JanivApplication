@@ -13,20 +13,20 @@ import com.janiv.api.repository.UsersRepository;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private UsersRepository userRepository;
+	private UsersRepository usersRepository;
 
 	public UserDetailsServiceImpl()
 	{		
 	}
 	
 	public UserDetailsServiceImpl(UsersRepository usersRepository) {
-		this.userRepository = usersRepository;
+		this.usersRepository = usersRepository;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
-			User user = userRepository.getUserByUsername(Long.parseLong(username));
+			User user = this.usersRepository.getUserByUsername(Long.parseLong(username));
 		
 		if (user == null) {
 			throw new UsernameNotFoundException("Could not find user" + username);

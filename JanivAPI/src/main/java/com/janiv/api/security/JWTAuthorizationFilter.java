@@ -2,7 +2,9 @@ package com.janiv.api.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.janiv.api.model.User;
 import com.janiv.api.service.UserDetailsServiceImpl;
+import com.janiv.api.service.UsersService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.janiv.api.Utilities.Constants.*;
 
@@ -30,8 +33,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		super(authManager);
 	}
 
-	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
 	@Bean
@@ -59,8 +60,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			jwtToken = requestTokenHeader.substring(TOKEN_PREFIX.length());
 
 			try {
+				
 				//Getting user name from JWT Token
 				username = jwtTokenUtil().getUsernameFromToken(jwtToken);
+				
 			} catch (IllegalArgumentException e) {
 				System.out.println("Unable to get JWT Token");
 			} catch (ExpiredJwtException e) {
@@ -75,16 +78,25 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		if (username != null && 
 				SecurityContextHolder.getContext().getAuthentication() == null) {
 			
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+			//UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 			
 			// if token is valid configure Spring Security to manually set
 			// authentication
-			if (jwtTokenUtil().validateToken(jwtToken, userDetails)) {
+			if (jwtTokenUtil().validateToken(jwtToken, username)) {
 				
+				/*
+				 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
 				.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+				
+				*/
+				
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+						username, null, new ArrayList<>());
+				
+				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 				
 				// After setting the Authentication in the context, we specify
 				// that the current user is authenticated. So it passes the

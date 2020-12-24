@@ -16,7 +16,7 @@ import com.janiv.api.model.User;
 
 //repository that extends CrudRepository 
 @Repository
-public interface UsersRepository extends CrudRepository<User, Long>  {
+public interface UsersRepository extends JpaRepository<User, Long>  {
 
 	@Query("SELECT u FROM User u WHERE u.mobilenumber = :mobilenumber")
     public User getUserByUsername(@Param("mobilenumber") Long mobilenumber);

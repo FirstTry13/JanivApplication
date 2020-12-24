@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ledgertransaction", schema = "public")
 public class LedgerTransaction {
 	
+	 
 	public enum PayType {CASH(0), ONLINE(1), CHEQUE(2);
 	
 		@SuppressWarnings("unused")
@@ -35,19 +37,22 @@ public class LedgerTransaction {
 		}	
 	}
 			
-	// Defining mobilenumber as primary key                yy
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO )
-	private int transactionid;
+	// Defining mobilenumber as primary key                
 	
+	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trans_generator")
+	//@SequenceGenerator(name = "trans_generator", sequenceName = "trans_seq", allocationSize = 100, initialValue = 1)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long transactionid;
+
 	@Column
 	private LedgerType ledgertypeid;
 	
-	@JoinColumn
+	@JoinColumn(name="ledgermasterid")
 	@ManyToOne
-	private LedgerMaster ledgermaster;
+	private LedgerMaster ledgermasterid;
 	
-	@JoinColumn
+	@JoinColumn(name="projectid")
 	@ManyToOne
 	private Project project;
 	
@@ -61,7 +66,7 @@ public class LedgerTransaction {
 	private Double amount;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="userid")
 	private User userid;
 	
 	@Column
@@ -93,7 +98,7 @@ public class LedgerTransaction {
 		this.paidby = paidby;
 		this.receiptnumber = receiptnumber;
 		this.recipientname = recipientname;
-		this.ledgermaster=ledgermasters;
+		this.ledgermasterid=ledgermasters;
 		this.userid=userid1;
 	}
 
@@ -106,12 +111,12 @@ public class LedgerTransaction {
 	}
 
 
-	public int getTransactionid() {
+	public long getTransactionid() {
 		return transactionid;
 	}
 
 
-	public void setTransactionid(int transactionid) {
+	public void setTransactionid(long transactionid) {
 		this.transactionid = transactionid;
 	}
 
@@ -225,12 +230,12 @@ public class LedgerTransaction {
 	}
 	
 	public LedgerMaster getLedgermaster() {
-		return ledgermaster;
+		return ledgermasterid;
 	}
 
 	 
 	public void setLedgermaster(LedgerMaster ledgermasterid) {
-		this.ledgermaster = ledgermasterid;
+		this.ledgermasterid = ledgermasterid;
 	}
 	
 }

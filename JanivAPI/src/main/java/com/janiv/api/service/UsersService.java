@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.janiv.api.mapper.UserMapper;
 import com.janiv.api.model.JwtResponse;
 import com.janiv.api.model.User;
 import com.janiv.api.repository.UsersRepository;
@@ -32,7 +33,7 @@ public class UsersService {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-
+	
 	@Autowired	
 	private UserDetailsServiceImpl userDetailsService()
 	{
@@ -48,7 +49,8 @@ public class UsersService {
 	}
 
 	public List<User> getAllUsers() {		
-		List<User> users = new ArrayList<User>();  
+		List<User> users = new ArrayList<User>();  ;
+		users= usersRepository.findAll();
 		//usersRepository.findAll().forEach(user1 -> users.add(user1));  
 		return users;  
 	}
@@ -57,6 +59,14 @@ public class UsersService {
 		User user=usersRepository.getUserByUsername(mobilenumber);
 		return user;
 	}
+	
+	public User getUserById(Long Id) {
+		Optional<User> user=usersRepository.findById(Id);
+		if( user.isPresent())
+			return user.get();
+		else
+			return null;
+	}
 
 	public void saveOrUpdate(User user) {
 
@@ -64,18 +74,21 @@ public class UsersService {
 		String password = user.getPassword();
 
 		//If password is provided then encrypting it
-		if ( (password == null)  || (password.length() != 0 ) )
+		if (user.getUserid()==0)
+		{
+		if ( (password != null)  || (password.length() != 0 ) )
 		{
 			//Encrypt password
 			user.setPassword(this.passwordEncoder.encode(password));
 		}
-
-		//usersRepository.save(user); 
+		} 
+		
+		usersRepository.save(user); 
 
 	}
 
-	public void delete(Long mobilenumber) {
-		//usersRepository.deleteById(mobilenumber);
+	public void delete(Long userid) {
+		usersRepository.deleteById(userid);
 
 	}
 

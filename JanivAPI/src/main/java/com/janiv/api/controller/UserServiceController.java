@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.janiv.api.mapper.UserMapper;
 import com.janiv.api.model.JwtRequest;
 import com.janiv.api.model.JwtResponse;
 import com.janiv.api.model.User;
@@ -29,14 +30,14 @@ import com.janiv.api.service.UsersService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserServiceController {
 	
 	//autowire the UsersService class  
 	@Autowired  
 	UsersService usersService;
 	
-
+	private UserMapper usermapper;
 
 	public UserServiceController(AuthenticationManager authenticationManager) {
 		
@@ -44,24 +45,23 @@ public class UserServiceController {
 	 
 	
 	/* Returns all users list. Further can be enhanced to get users in batches*/
-	@RequestMapping(value = "/users")
+	@RequestMapping()
 	public List<User> getUsers() 
 	{ 
 		return usersService.getAllUsers(); 
 	}
 
 	/* Returns particular user information */
-	@RequestMapping(value = "/users/{mobilenumber}")
-	public Optional<User> getUser(@PathVariable("mobilenumber") Long mobilenumber) 
+	@RequestMapping(value = "/{mobilenumber}")
+	public User getUser(@PathVariable("mobilenumber") Long mobilenumber) 
 	{
-		//return usersService.getUserByMobileNo(mobilenumber);
-		return null;
+		return usersService.getUserByMobileNo(mobilenumber);		
 
 	}
 
 	/* Creates (or Registers) user  */
-	@RequestMapping(value = "/users/register", method = RequestMethod.POST)
-	public ResponseEntity<Object> createUser(@RequestBody User user) 
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<Object> addUpdateUser(@RequestBody User user) 
 	{
 		usersService.saveOrUpdate(user);  
 
@@ -69,22 +69,26 @@ public class UserServiceController {
 	}
 
 	/* Updates user*/	
-	@RequestMapping(value = "/users/update/{mobilenumber}", method = RequestMethod.PUT)
-	public ResponseEntity<Object> updateUser(@PathVariable("mobilenumber") Long mobilenumber , @RequestBody User user) 
+	/*@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	public ResponseEntity<Object> updateUser( @RequestBody User user) 
 	{		
-		usersService.saveOrUpdate(user);
+			
+		User dbuser=usersService.getUserById(user.getUserid());			
+		usermapper.updateUserFromDto(user, dbuser);
+		
+		usersService.saveOrUpdate(dbuser);
 		return new ResponseEntity<>("User is updated successsfully", HttpStatus.OK);
-	}
+	}*/
 
 	/* Deletes user */
-	@RequestMapping(value = "/users/{mobilenumber}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{mobilenumber}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> delete(@PathVariable("mobilenumber") Long mobilenumber) { 
 
 		usersService.delete(mobilenumber); 
 		return new ResponseEntity<>("User is deleted successsfully", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/users/authenticate", method = RequestMethod.POST)
+	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		
 		String token = usersService.authenticate(authenticationRequest.getMobilenumber(), authenticationRequest.getPassword());

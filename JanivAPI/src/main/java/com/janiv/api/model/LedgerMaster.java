@@ -53,7 +53,10 @@ public class LedgerMaster {
 		this.descripation = descripation;
 	}
 	
-	
+	public LedgerMaster()
+	{
+		
+	}
 	
 	
 }

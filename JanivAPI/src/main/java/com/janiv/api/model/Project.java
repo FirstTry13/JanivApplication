@@ -27,19 +27,19 @@ public class Project {
 	private String address;
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="locationid")
 	private Location locationid;		
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="districtid")
 	private District districtid;		
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="stateid")
 	private State stateid;	
 	
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="countryid")
 	private Country countryid;
 	
 	@Column
@@ -64,6 +64,10 @@ public class Project {
 		this.enddate = enddate;
 	}
 	
+	public Project()
+	{
+		
+	}
 	public int getProjectid() {
 		return projectid;
 	}

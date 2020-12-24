@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +26,8 @@ public class User {
 	}	
 	// Defining mobilenumber as primary key
 	@Id
-	@GeneratedValue
-	private int userid;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long userid;
 	
 	@Column
 	private Long mobilenumber;
@@ -314,11 +315,11 @@ public class User {
 		othercontactno = otherContactNo;
 	}
 
-	public int getUserid() {
+	public long getUserid() {
 		return userid;
 	}
 
-	public void setUserid(int contactID) {
+	public void setUserid(long contactID) {
 		userid = contactID;
 	}
 
